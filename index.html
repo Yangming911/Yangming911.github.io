@@ -29,7 +29,7 @@
     line-height:1.65;
     font-size:16px;
   }
-  .wrap{max-width:840px;margin:0 auto;padding:0 22px}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 26px}
 
   /* ---------- header / nav ---------- */
   header{padding:44px 0 8px}
@@ -52,17 +52,20 @@
   nav a:hover{color:var(--accent-deep);text-decoration:underline}
   .rule{border:none;border-top:2px solid var(--accent-line);margin:18px 0 30px}
 
-  /* ---------- intro ---------- */
-  .intro{display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap}
-  .intro-text{flex:1 1 480px}
-  .portrait{
-    flex:0 0 210px;
-    width:210px;height:260px;
-    object-fit:cover;
-    border-radius:10px;
-    border:1px solid var(--accent-line);
-    background:var(--accent-soft);
+  /* ---------- layout (main + sidebar) ---------- */
+  .layout{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 300px;
+    grid-template-areas:
+      "intro aside"
+      "body  aside";
+    column-gap:48px;
+    align-items:start;
   }
+  .intro-text{grid-area:intro}
+  .aside{grid-area:aside}
+  .body{grid-area:body}
+
   p{margin-bottom:14px}
   a{color:var(--accent)}
   a:hover{color:var(--accent-deep)}
@@ -76,8 +79,35 @@
   .profiles a{font-weight:600;text-decoration:none;margin-right:4px}
   .profiles span.sep{color:var(--accent-line);margin:0 6px}
 
+  /* ---------- sidebar portrait + news ---------- */
+  .portrait{
+    width:100%;
+    aspect-ratio:4/5;
+    object-fit:cover;
+    border-radius:12px;
+    border:1px solid var(--accent-line);
+    background:var(--accent-soft);
+    display:block;
+    margin-bottom:26px;
+  }
+  .news-block h2{margin-top:0}
+  .news{list-style:none}
+  .news li{
+    padding:6px 0;
+    display:flex;gap:12px;
+  }
+  .news .date{
+    flex:0 0 78px;
+    font-weight:600;
+    color:var(--accent);
+    font-size:0.88rem;
+    padding-top:1px;
+  }
+  .news .what{flex:1;font-size:0.92rem}
+
   /* ---------- sections ---------- */
   section{margin:44px 0}
+  .body > section:first-child{margin-top:0}
   h2{
     font-family:var(--serif);
     font-size:1.5rem;
@@ -174,21 +204,6 @@
     padding:8px 12px;margin-top:14px;
   }
 
-  /* ---------- news ---------- */
-  .news{list-style:none}
-  .news li{
-    padding:6px 0 6px 0;
-    display:flex;gap:14px;
-  }
-  .news .date{
-    flex:0 0 84px;
-    font-weight:600;
-    color:var(--accent);
-    font-size:0.9rem;
-    padding-top:1px;
-  }
-  .news .what{flex:1;font-size:0.95rem}
-
   /* ---------- two-column lists (services / teaching) ---------- */
   .cols{display:grid;grid-template-columns:1fr 1fr;gap:8px 34px}
   .cols ul{list-style:none}
@@ -212,10 +227,23 @@
     font-size:0.85rem;color:var(--ink-soft);
   }
 
+  /* ---------- responsive ---------- */
+  @media (max-width:860px){
+    .layout{
+      grid-template-columns:1fr;
+      grid-template-areas:
+        "intro"
+        "aside"
+        "body";
+      column-gap:0;
+    }
+    .aside{max-width:440px;margin:0 auto 10px}
+    .portrait{aspect-ratio:auto;max-height:420px;object-position:top}
+    .body > section:first-child{margin-top:44px}
+  }
   @media (max-width:680px){
     .cards{grid-template-columns:1fr}
     .cols{grid-template-columns:1fr}
-    .portrait{flex-basis:100%;width:100%;height:auto;max-height:360px}
     .pub{flex-direction:column;gap:6px}
     .pub-venue{align-self:flex-start;padding:4px 12px}
   }
@@ -240,8 +268,9 @@
     <hr class="rule">
   </header>
 
-  <!-- ============ INTRO ============ -->
-  <div class="intro">
+  <div class="layout">
+
+    <!-- ============ INTRO ============ -->
     <div class="intro-text">
       <p>
         I am Shuqi (Suky) Wang, a PhD student in the <a href="https://automation.sjtu.edu.cn/">Department of Automation</a>,
@@ -252,6 +281,11 @@
         focus on using <b>conformal prediction</b> as a safety interface between
         learning-based perception/decision modules and physical control loops.
         <a class="more" href="#research">More &gt;</a>
+      </p>
+
+      <p>
+        Prior to my PhD, I earned my bachelor's degree in Artificial Intelligence (Robotics) Honored Class from
+        <a href="https://en.sjtu.edu.cn/">SJTU</a>.
       </p>
 
       <p><b>Research Interests:</b></p>
@@ -271,7 +305,6 @@
         <a href="#contact">contact me</a>.
       </p>
 
-
       <p class="profiles">
         <a href="https://scholar.google.com/citations?hl=en&user=FO-gMJ8AAAAJ">Google Scholar</a><span class="sep">|</span>
         <a href="https://github.com/Yangming911">GitHub</a><span class="sep">|</span>
@@ -279,164 +312,181 @@
         <!-- TODO: 替换 GitHub / ORCID / 邮箱链接 -->
       </p>
     </div>
-    <img class="portrait" src="assets/portrait.jpg" alt="portrait photo">
-  </div>
 
-  <!-- ============ RESEARCH HIGHLIGHTS ============ -->
-  <section id="research">
-    <h2><span class="hash">#</span>Research Highlights</h2>
-    <div class="cards">
+    <!-- ============ SIDEBAR: PORTRAIT + LATEST NEWS ============ -->
+    <aside class="aside">
+      <img class="portrait" src="assets/portrait.jpg" alt="portrait photo">
 
-      <!-- CoSMO: 只放 demo 视频，不放论文题目与论文本体 -->
-      <div class="card">
-        <span class="badge">Under Review · Demo</span>
-        <h4>Safe Semantic Navigation in the Open World</h4>
-        <video controls preload="metadata" poster="assets/demo_poster.jpg">
-          <source src="assets/demo.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <p>
-          A quadruped robot navigates unseen environments while a conformal safety
-          layer filters open-vocabulary semantic predictions in real time.
-          Paper details will be released after the review process.
-        </p>
-        <div class="tags">
-          <span class="tag">Conformal Prediction</span>
-          <span class="tag">Robot Navigation</span>
-          <span class="tag">Open World</span>
-        </div>
-      </div>
-
-      <div class="card">
-        <span class="badge">NAHS 2026</span>
-        <h4>Chance-Constrained Neural MPC under Uncontrollable Agents</h4>
-        <p>
-          A neural MPC framework with formal probabilistic safety guarantees against
-          stochastic, state-coupled uncontrollable agents: region-wise robust conformal
-          prediction constructs time-dependent uncertainty bounds under policy-induced
-          distribution shift, and a two-loop sequential convex programming algorithm
-          solves the resulting chance-constrained problem.
-        </p>
-        <div class="tags">
-          <span class="tag">Neural MPC</span>
-          <span class="tag">Robust CP</span>
-          <span class="tag">Convex Optimization</span>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ============ PUBLICATIONS ============ -->
-  <section id="publications">
-    <h2><span class="hash">#</span>Selected Publications</h2>
-
-    <div class="filters" id="pubFilters">
-      <button data-filter="featured" class="active">Featured</button>
-      <button data-filter="cp">Conformal Prediction</button>
-      <button data-filter="control">Safe Control</button>
-      <button data-filter="health">AI &amp; Health</button>
-      <button data-filter="all">All</button>
-    </div>
-
-    <div id="pubList">
-
-      <div class="pub" data-cat="featured cp control">
-        <div class="pub-venue">NAHS<br>2026</div>
-        <div class="pub-body">
-          <div class="pub-title">Chance-constrained neural MPC under uncontrollable agents via sequential convex programming</div>
-          <div class="pub-authors"><span class="me">Shuqi Wang</span>, Mingyang Feng, Yu Chen, Yue Gao, Xiang Yin</div>
-          <div class="pub-meta"><em>Nonlinear Analysis: Hybrid Systems</em>, vol. 62, 101751, 2026</div>
-          <div class="pub-links"><a href="https://www.sciencedirect.com/science/article/pii/S1751570X26000774">Paper</a></div>
-        </div>
-      </div>
-
-
-      <div class="pub" data-cat="health">
-        <div class="pub-venue">npj Digit. Med.<br>2026</div>
-        <div class="pub-body">
-          <div class="pub-title">Mapping the role of artificial intelligence in health-related stigma: a scoping review</div>
-          <div class="pub-authors">Tianqi Song, Jack Jamieson, Wataru Akahori, Han Meng, <span class="me">Shuqi Wang</span>, Yi-Chieh Lee</div>
-          <div class="pub-meta"><em>npj Digital Medicine</em>, 2026</div>
-          <div class="pub-links"><a href="https://www.nature.com/articles/s41746-026-02832-x">Paper</a></div>
-        </div>
-      </div>
-
-      <div class="pub" data-cat="featured cp control">
-        <div class="pub-venue">arXiv<br>2024</div>
-        <div class="pub-body">
-          <div class="pub-title">SPARC: Prediction-based safe control for coupled controllable and uncontrollable agents with conformal predictions</div>
-          <div class="pub-authors"><span class="me">Shuqi Wang</span>, Siqi Wang, Shaoyuan Li, Xiang Yin</div>
-          <div class="pub-meta"><em>arXiv preprint arXiv:2410.15660</em>, 2024</div>
-          <div class="pub-links"><a href="https://arxiv.org/abs/2410.15660">arXiv</a><a href="https://arxiv.org/pdf/2410.15660">PDF</a></div>
-        </div>
-      </div>
-      
-    </div>
-  </section>
-
-  <!-- ============ LATEST NEWS ============ -->
-  <section id="news">
-    <h2><span class="hash">#</span>Latest News</h2>
-    <ul class="news">
-      <li><span class="date">2026 May</span><span class="what">I passed QE and became a PhD candidate! 🎉</span></li>
-      <li><span class="date">2026 May</span><span class="what">Our scoping review on AI and health-related stigma was published in <a href="https://www.nature.com/articles/s41746-026-02832-x">npj Digital Medicine</a>!</span></li>
-      <li><span class="date">2026</span><span class="what">Our paper on chance-constrained neural MPC was accepted by <a href="https://www.sciencedirect.com/science/article/pii/S1751570X26000774"><i>Nonlinear Analysis: Hybrid Systems</i></a>! 🎊</span></li>
-      <li><span class="date">2024 Oct</span><span class="what">Our SPARC framework for prediction-based safe control is now on <a href="https://arxiv.org/abs/2410.15660">arXiv</a>.</span></li>
-    </ul>
-  </section>
-
-  <!-- ============ ACADEMIC SERVICES ============ -->
-  <section id="services">
-    <h2><span class="hash">#</span>Academic Services</h2>
-    <div class="cols">
-      <div>
-        <h3>Reviewer</h3>
-        <ul>
-          <li>IEEE Conference on Decision and Control (CDC) <span class="yr">2026</span></li>
-          <li>IEEE Transactions on Automatic Control <span class="yr">2026</span></li>
+      <div class="news-block" id="news">
+        <h2><span class="hash">#</span>Latest News</h2>
+        <ul class="news">
+          <li><span class="date">2026 May</span><span class="what">I passed QE and became a PhD candidate! 🎉</span></li>
+          <li><span class="date">2026 May</span><span class="what">Our scoping review on AI and health-related stigma was published in <a href="https://www.nature.com/articles/s41746-026-02832-x">npj Digital Medicine</a>!</span></li>
+          <li><span class="date">2026</span><span class="what">Our paper on chance-constrained neural MPC was accepted by <a href="https://www.sciencedirect.com/science/article/pii/S1751570X26000774"><i>Nonlinear Analysis: Hybrid Systems</i></a>! 🎊</span></li>
+          <li><span class="date">2024 Oct</span><span class="what">Our SPARC framework for prediction-based safe control is now on <a href="https://arxiv.org/abs/2410.15660">arXiv</a>.</span></li>
         </ul>
       </div>
-    </div>
-  </section>
+    </aside>
 
-  <!-- ============ TEACHING ============ -->
-  <section id="teaching">
-    <h2><span class="hash">#</span>Teaching</h2>
-    <div class="cols">
-      <div>
-        <h3>Teaching Assistant</h3>
-        <ul>
-          <li>AU7022H: Stochastic Methods in Systems &amp; Control (Honor), Zhiyuan Honor Course <span class="yr">2025 Fall</span></li>
+    <!-- ============ MAIN BODY ============ -->
+    <div class="body">
+
+      <!-- ============ RESEARCH HIGHLIGHTS ============ -->
+      <section id="research">
+        <h2><span class="hash">#</span>Research Highlights</h2>
+        <div class="cards">
+
+          <!-- CoSMO: 只放 demo 视频，不放论文题目与论文本体 -->
+          <div class="card">
+            <span class="badge">Under Review · Demo</span>
+            <h4>Safe Semantic Navigation in the Open World</h4>
+            <video controls preload="metadata" poster="assets/demo_poster.jpg">
+              <source src="assets/demo.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <p>
+              A quadruped robot navigates unseen environments while a conformal safety
+              layer filters open-vocabulary semantic predictions in real time.
+              Paper details will be released after the review process.
+            </p>
+            <div class="tags">
+              <span class="tag">Conformal Prediction</span>
+              <span class="tag">Robot Navigation</span>
+              <span class="tag">Open World</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="badge">NAHS 2026</span>
+            <h4>Chance-Constrained Neural MPC under Uncontrollable Agents</h4>
+            <p>
+              A neural MPC framework with formal probabilistic safety guarantees against
+              stochastic, state-coupled uncontrollable agents: region-wise robust conformal
+              prediction constructs time-dependent uncertainty bounds under policy-induced
+              distribution shift, and a two-loop sequential convex programming algorithm
+              solves the resulting chance-constrained problem.
+            </p>
+            <div class="tags">
+              <span class="tag">Neural MPC</span>
+              <span class="tag">Robust CP</span>
+              <span class="tag">Convex Optimization</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ PUBLICATIONS ============ -->
+      <section id="publications">
+        <h2><span class="hash">#</span>Selected Publications</h2>
+
+        <div class="filters" id="pubFilters">
+          <button data-filter="featured" class="active">Featured</button>
+          <button data-filter="cp">Conformal Prediction</button>
+          <button data-filter="control">Safe Control</button>
+          <button data-filter="health">AI &amp; Health</button>
+          <button data-filter="all">All</button>
+        </div>
+
+        <div id="pubList">
+
+          <div class="pub" data-cat="featured cp control">
+            <div class="pub-venue">NAHS<br>2026</div>
+            <div class="pub-body">
+              <div class="pub-title">Chance-constrained neural MPC under uncontrollable agents via sequential convex programming</div>
+              <div class="pub-authors"><span class="me">Shuqi Wang</span>, Mingyang Feng, Yu Chen, Yue Gao, Xiang Yin</div>
+              <div class="pub-meta"><em>Nonlinear Analysis: Hybrid Systems</em>, vol. 62, 101751, 2026</div>
+              <div class="pub-links"><a href="https://www.sciencedirect.com/science/article/pii/S1751570X26000774">Paper</a></div>
+            </div>
+          </div>
+
+          <div class="pub" data-cat="health">
+            <div class="pub-venue">npj Digit. Med.<br>2026</div>
+            <div class="pub-body">
+              <div class="pub-title">Mapping the role of artificial intelligence in health-related stigma: a scoping review</div>
+              <div class="pub-authors">Tianqi Song, Jack Jamieson, Wataru Akahori, Han Meng, <span class="me">Shuqi Wang</span>, Yi-Chieh Lee</div>
+              <div class="pub-meta"><em>npj Digital Medicine</em>, 2026</div>
+              <div class="pub-links"><a href="https://www.nature.com/articles/s41746-026-02832-x">Paper</a></div>
+            </div>
+          </div>
+
+          <div class="pub" data-cat="featured cp control">
+            <div class="pub-venue">arXiv<br>2024</div>
+            <div class="pub-body">
+              <div class="pub-title">SPARC: Prediction-based safe control for coupled controllable and uncontrollable agents with conformal predictions</div>
+              <div class="pub-authors"><span class="me">Shuqi Wang</span>, Siqi Wang, Shaoyuan Li, Xiang Yin</div>
+              <div class="pub-meta"><em>arXiv preprint arXiv:2410.15660</em>, 2024</div>
+              <div class="pub-links"><a href="https://arxiv.org/abs/2410.15660">arXiv</a><a href="https://arxiv.org/pdf/2410.15660">PDF</a></div>
+            </div>
+          </div>
+
+          <div class="pub" data-cat="control">
+            <div class="pub-venue">IFAC WC<br>2023</div>
+            <div class="pub-body">
+              <div class="pub-title">Failure-aware self-diagnostic task planning under temporal logic specifications</div>
+              <div class="pub-authors">Jianing Zhao, <span class="me">Shuqi Wang</span>, Xiang Yin</div>
+              <div class="pub-meta"><em>IFAC-PapersOnLine</em>, vol. 56, no. 2, pp. 4582–4588, 2023</div>
+              <div class="pub-links"><a href="https://www.sciencedirect.com/science/article/pii/S2405896323013423">Paper</a></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ ACADEMIC SERVICES ============ -->
+      <section id="services">
+        <h2><span class="hash">#</span>Academic Services</h2>
+        <div class="cols">
+          <div>
+            <h3>Reviewer</h3>
+            <ul>
+              <li>IEEE Conference on Decision and Control (CDC) <span class="yr">2026</span></li>
+              <li>IEEE Transactions on Automatic Control <span class="yr">2026</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ TEACHING ============ -->
+      <section id="teaching">
+        <h2><span class="hash">#</span>Teaching</h2>
+        <div class="cols">
+          <div>
+            <h3>Teaching Assistant</h3>
+            <ul>
+              <li>AU7022H: Stochastic Methods in Systems &amp; Control (Honor), Zhiyuan Honor Course <span class="yr">2025 Fall</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ AWARDS ============ -->
+      <section id="awards">
+        <h2><span class="hash">#</span>Awards &amp; Honors</h2>
+        <ul class="plain">
+          <li>2024 &nbsp;Outstanding Graduate of Shanghai</li>
+          <li>2024 &nbsp;Ye Jun &amp; Shen Nanpeng Zhiyuan Outstanding Scholarship <span style="color:var(--ink-soft)">(14 of ~4,000 SJTU students per year)</span></li>
+          <li>2021 – 2024 &nbsp;<a href="http://47.101.199.56/">Fan Hsu-chi Scholarship</a>, three consecutive years <span style="color:var(--ink-soft)">(15 of ~4,000 SJTU students per year)</span></li>
+          <li>2020 – 2024 &nbsp;Zhiyuan Honor Scholarship, four consecutive years</li>
         </ul>
-      </div>
-    </div>
-  </section>
+      </section>
 
-  <!-- ============ AWARDS ============ -->
-  <section id="awards">
-    <h2><span class="hash">#</span>Awards &amp; Honors</h2>
-    <ul class="plain">
-      <li>2024 &nbsp;Outstanding Graduate of Shanghai</li>
-      <li>2024 &nbsp;Ye Jun &amp; Shen Nanpeng Zhiyuan Outstanding Scholarship <span style="color:var(--ink-soft)">(14 of ~4,000 SJTU students per year)</span></li>
-      <li>2021 – 2024 &nbsp;<a href="http://47.101.199.56/">Fan Hsu-chi Scholarship</a>, three consecutive years <span style="color:var(--ink-soft)">(15 of ~4,000 SJTU students per year)</span></li>
-      <li>2020 – 2024 &nbsp;Zhiyuan Honor Scholarship, four consecutive years</li>
-    </ul>
-  </section>
+      <!-- ============ ABOUT ME ============ -->
+      <section id="contact">
+        <h2><span class="hash">#</span>About Me</h2>
+        <p>
+          In Isaac Asimov's <i>Robots and Empire</i>, the Spacers failed not because they used robots,
+          but because they used robots to avoid becoming pioneers themselves. This story has stayed
+          with me. I hope to contribute, even in small ways, to a future in which humans use robots
+          not merely to preserve comfort, but to better understand robots, the world, and ourselves.
+          Human–robot cooperation should help us move safely beyond our local optima, rather than
+          trapping us inside them.
+        </p>
+        <p>Email: <a href="wangshuqi@sjtu.edu.cn">wangshuqi@sjtu.edu.cn</a> <!-- TODO: 换成真实邮箱 --></p>
+      </section>
 
-  <!-- ============ ABOUT ME ============ -->
-  <section id="contact">
-    <h2><span class="hash">#</span>About Me</h2>
-    <p>
-      In Isaac Asimov's <i>Robots and Empire</i>, the Spacers failed not because they used robots,
-      but because they used robots to avoid becoming pioneers themselves. This story has stayed
-      with me. I hope to contribute, even in small ways, to a future in which humans use robots
-      not merely to preserve comfort, but to better understand robots, the world, and ourselves.
-      Human–robot cooperation should help us move safely beyond our local optima, rather than
-      trapping us inside them.
-    </p>
-    <p>Email: <a href="wangshuqi@sjtu.edu.cn">wangshuqi@sjtu.edu.cn</a> <!-- TODO: 换成真实邮箱 --></p>
-  </section>
+    </div><!-- /.body -->
+  </div><!-- /.layout -->
 
   <!-- ============ FOOTER ============ -->
   <footer>
