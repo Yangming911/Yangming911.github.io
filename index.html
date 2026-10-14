@@ -125,24 +125,24 @@
   h3{font-size:1.02rem;margin:18px 0 8px;color:var(--accent-deep)}
 
   /* ---------- highlight cards ---------- */
-  .cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
   .card{
-    display:flex;flex-direction:column;
+    display:grid;grid-template-rows:subgrid;grid-row:span 6;
     background:var(--card);
     border:1px solid var(--accent-line);
     border-radius:12px;
-    padding:18px 18px 16px;
+    padding:14px;
     transition:box-shadow .18s ease, transform .18s ease;
   }
   .card:hover{box-shadow:0 6px 18px rgba(43,124,196,.12);transform:translateY(-2px)}
   .card h4{
     font-family:var(--serif);
     font-size:1.08rem;
-    margin-bottom:8px;
+    margin-bottom:6px;
     color:var(--ink);
   }
-  .card p{font-size:0.92rem;color:var(--ink-soft);margin-bottom:12px}
-  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .card p{font-size:0.92rem;line-height:1.55;color:var(--ink-soft);margin-bottom:10px}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;align-content:start;align-items:flex-start}
   .tag{
     font-size:0.74rem;font-weight:600;
     color:var(--accent-deep);
@@ -154,12 +154,11 @@
   .badge{
     display:inline-block;font-size:0.74rem;font-weight:700;
     color:#fff;background:var(--accent);
-    border-radius:999px;padding:2px 10px;margin-bottom:8px;
+    border-radius:999px;padding:2px 10px;margin-bottom:6px;
     letter-spacing:.02em;
   }
-  .card h4{min-height:5.35rem}
   .highlight-video{
-    width:100%;aspect-ratio:16/9;border-radius:8px;margin:4px 0 12px;
+    width:100%;aspect-ratio:16/9;border-radius:8px;margin:0 0 10px;
     border:1px solid var(--accent-line);
     background:#0d1b28;
     overflow:hidden;
@@ -178,7 +177,7 @@
   .video-preview:hover .video-play{background:var(--accent)}
   .video-preview:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
   .highlight-video iframe{display:block;width:100%;height:100%;border:0}
-  .card-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:auto;padding:0 0 12px}
+  .card-links{display:flex;flex-wrap:wrap;gap:12px;padding:0 0 8px}
   .card-links a{font-size:0.82rem;font-weight:600;text-decoration:none}
   .card-links a:hover{text-decoration:underline}
 
@@ -266,8 +265,8 @@
     .body > section:first-child{margin-top:44px}
   }
   @media (max-width:680px){
-    .cards{grid-template-columns:1fr}
-    .card h4{min-height:0}
+    .cards{grid-template-columns:1fr;row-gap:16px}
+    .card{display:flex;flex-direction:column;grid-row:auto}
     .cols{grid-template-columns:1fr}
     .pub{flex-direction:column;gap:6px}
     .pub-venue{align-self:flex-start;padding:4px 12px}
@@ -403,11 +402,10 @@
               </button>
             </div>
             <p>
-              A neural MPC framework with formal probabilistic safety guarantees against
-              stochastic, state-coupled uncontrollable agents: region-wise robust conformal
-              prediction constructs time-dependent uncertainty bounds under policy-induced
-              distribution shift, and a two-loop sequential convex programming algorithm
-              solves the resulting chance-constrained problem.
+              Neural MPC provides formal probabilistic safety guarantees against
+              stochastic, state-coupled uncontrollable agents. Region-wise robust
+              conformal prediction bounds time-dependent uncertainty under
+              policy-induced distribution shifts.
             </p>
             <div class="card-links">
               <a href="https://www.sciencedirect.com/science/article/pii/S1751570X26000774">Paper</a>
