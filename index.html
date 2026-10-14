@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Shuqi Wang | Safety Control for AI-Embedded CPS at SJTU</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -122,6 +126,7 @@
   /* ---------- highlight cards ---------- */
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
   .card{
+    display:flex;flex-direction:column;
     background:var(--card);
     border:1px solid var(--accent-line);
     border-radius:12px;
@@ -151,12 +156,30 @@
     border-radius:999px;padding:2px 10px;margin-bottom:8px;
     letter-spacing:.02em;
   }
-  .card video{
-    width:100%;border-radius:8px;margin:4px 0 10px;
+  .card h4{min-height:5.35rem}
+  .highlight-video{
+    width:100%;aspect-ratio:16/9;border-radius:8px;margin:4px 0 12px;
     border:1px solid var(--accent-line);
     background:#0d1b28;
-    display:block;
+    overflow:hidden;
   }
+  .video-preview{
+    position:relative;display:block;width:100%;height:100%;
+    border:0;background:#0d1b28;cursor:pointer;
+  }
+  .video-preview img{display:block;width:100%;height:100%;object-fit:cover}
+  .video-play{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    display:grid;place-items:center;width:56px;height:40px;
+    border-radius:10px;background:#1d5f9c;color:#fff;
+  }
+  .video-play svg{width:22px;height:22px;fill:currentColor}
+  .video-preview:hover .video-play{background:var(--accent)}
+  .video-preview:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .highlight-video iframe{display:block;width:100%;height:100%;border:0}
+  .card-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:auto;padding:0 0 12px}
+  .card-links a{font-size:0.82rem;font-weight:600;text-decoration:none}
+  .card-links a:hover{text-decoration:underline}
 
   /* ---------- publications ---------- */
   .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
@@ -243,6 +266,7 @@
   }
   @media (max-width:680px){
     .cards{grid-template-columns:1fr}
+    .card h4{min-height:0}
     .cols{grid-template-columns:1fr}
     .pub{flex-direction:column;gap:6px}
     .pub-venue{align-self:flex-start;padding:4px 12px}
@@ -321,6 +345,7 @@
       <div class="news-block" id="news">
         <h2><span class="hash">#</span>Latest News</h2>
         <ul class="news">
+          <li><span class="date">2026 Oct</span><span class="what">Our <a href="https://yangming911.github.io/cosmo-page/">CoSMO</a> paper on open-world safe robot navigation has been accepted at <b>CoRL 2026</b>! The <a href="https://arxiv.org/abs/2610.18321">paper</a> and <a href="https://yangming911.github.io/cosmo-page/">project website</a> are now available.</span></li>
           <li><span class="date">2026 May</span><span class="what">I passed QE and became a PhD candidate! 🎉</span></li>
           <li><span class="date">2026 May</span><span class="what">Our scoping review on AI and health-related stigma was published in <a href="https://www.nature.com/articles/s41746-026-02832-x">npj Digital Medicine</a>!</span></li>
           <li><span class="date">2026</span><span class="what">Our paper on chance-constrained neural MPC was accepted by <a href="https://www.sciencedirect.com/science/article/pii/S1751570X26000774"><i>Nonlinear Analysis: Hybrid Systems</i></a>! 🎊</span></li>
@@ -338,19 +363,26 @@
         <h2><span class="hash">#</span>Research Highlights</h2>
         <div class="cards">
 
-          <!-- CoSMO: 只放 demo 视频，不放论文题目与论文本体 -->
+          <!-- CoSMO -->
           <div class="card">
-            <span class="badge">Under Review · Demo</span>
-            <h4>Safe Semantic Navigation in the Open World</h4>
-            <video controls preload="metadata" poster="assets/demo_poster.jpg">
-              <source src="assets/demo.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
+            <div><span class="badge">CoRL 2026</span></div>
+            <h4>CoSMO: Open-World Safe Robot Navigation</h4>
+            <div class="highlight-video">
+              <button class="video-preview" type="button" data-video-id="LvttKb8bCho" aria-label="Play CoSMO demonstration video">
+                <img src="assets/cosmo-video.jpg" alt="Preview of the CoSMO robot navigation demonstration" loading="lazy" width="1280" height="720">
+                <span class="video-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z"/></svg></span>
+              </button>
+            </div>
             <p>
-              A quadruped robot navigates unseen environments while a conformal safety
-              layer filters open-vocabulary semantic predictions in real time.
-              Paper details will be released after the review process.
+              Conformal semantic mapping turns vision-language embeddings into calibrated
+              safety maps for open-world robot navigation, adapting to new hazards and
+              distribution shifts with delayed expert feedback.
             </p>
+            <div class="card-links">
+              <a href="https://arxiv.org/abs/2610.18321">Paper</a>
+              <a href="https://yangming911.github.io/cosmo-page/">Project</a>
+              <a href="https://www.youtube.com/watch?v=LvttKb8bCho">Video</a>
+            </div>
             <div class="tags">
               <span class="tag">Conformal Prediction</span>
               <span class="tag">Robot Navigation</span>
@@ -359,8 +391,14 @@
           </div>
 
           <div class="card">
-            <span class="badge">NAHS 2026</span>
+            <div><span class="badge">NAHS 2026</span></div>
             <h4>Chance-Constrained Neural MPC under Uncontrollable Agents</h4>
+            <div class="highlight-video">
+              <button class="video-preview" type="button" data-video-id="6i8AGFpNJws" aria-label="Play NAHS neural MPC demonstration video">
+                <img src="assets/nahs-video.jpg" alt="Preview of the NAHS chance-constrained neural MPC demonstration" loading="lazy" width="1280" height="720">
+                <span class="video-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z"/></svg></span>
+              </button>
+            </div>
             <p>
               A neural MPC framework with formal probabilistic safety guarantees against
               stochastic, state-coupled uncontrollable agents: region-wise robust conformal
@@ -368,6 +406,10 @@
               distribution shift, and a two-loop sequential convex programming algorithm
               solves the resulting chance-constrained problem.
             </p>
+            <div class="card-links">
+              <a href="https://www.sciencedirect.com/science/article/pii/S1751570X26000774">Paper</a>
+              <a href="https://youtu.be/6i8AGFpNJws">Video</a>
+            </div>
             <div class="tags">
               <span class="tag">Neural MPC</span>
               <span class="tag">Robust CP</span>
@@ -393,12 +435,22 @@
         <div id="pubList">
 
           <div class="pub" data-cat="featured cp control">
+            <div class="pub-venue">CoRL<br>2026</div>
+            <div class="pub-body">
+              <div class="pub-title">CoSMO: Conformal Semantic Mapping for Open-World Safe Robot Navigation</div>
+              <div class="pub-authors"><span class="me">Shuqi Wang</span>, Yiwei Zheng, Pingrui Zhang, Yue Gao, Xiang Yin</div>
+              <div class="pub-meta"><em>Conference on Robot Learning (CoRL)</em>, 2026</div>
+              <div class="pub-links"><a href="https://arxiv.org/abs/2610.18321">arXiv</a><a href="https://arxiv.org/pdf/2610.18321">PDF</a><a href="https://yangming911.github.io/cosmo-page/">Project</a><a href="https://www.youtube.com/watch?v=LvttKb8bCho">Video</a></div>
+            </div>
+          </div>
+
+          <div class="pub" data-cat="featured cp control">
             <div class="pub-venue">NAHS<br>2026</div>
             <div class="pub-body">
               <div class="pub-title">Chance-constrained neural MPC under uncontrollable agents via sequential convex programming</div>
               <div class="pub-authors"><span class="me">Shuqi Wang</span>, Mingyang Feng, Yu Chen, Yue Gao, Xiang Yin</div>
               <div class="pub-meta"><em>Nonlinear Analysis: Hybrid Systems</em>, vol. 62, 101751, 2026</div>
-              <div class="pub-links"><a href="https://www.sciencedirect.com/science/article/pii/S1751570X26000774">Paper</a></div>
+              <div class="pub-links"><a href="https://www.sciencedirect.com/science/article/pii/S1751570X26000774">Paper</a><a href="https://youtu.be/6i8AGFpNJws">Video</a></div>
             </div>
           </div>
 
@@ -458,6 +510,7 @@
           <div>
             <h3>Teaching Assistant</h3>
             <ul>
+              <li>CS2501H: Discrete Mathematics (Honor) (Zhiyuan Honor Course) <span class="yr">2026 Fall</span></li>
               <li>AU7022H: Stochastic Methods in Systems &amp; Control (Honor), Zhiyuan Honor Course <span class="yr">2025 Fall</span></li>
             </ul>
           </div>
@@ -501,6 +554,20 @@
 </div>
 
 <script>
+  // Load each YouTube player only when its preview is clicked.
+  document.querySelectorAll('.video-preview').forEach(button => {
+    button.addEventListener('click', () => {
+      const player = document.createElement('iframe');
+      player.src = `https://www.youtube-nocookie.com/embed/${button.dataset.videoId}?autoplay=1&rel=0`;
+      player.title = button.getAttribute('aria-label');
+      player.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      player.allowFullscreen = true;
+      player.referrerPolicy = 'strict-origin-when-cross-origin';
+      button.replaceWith(player);
+      player.focus();
+    });
+  });
+
   // Publication keyword filter
   const buttons = document.querySelectorAll('#pubFilters button');
   const pubs = document.querySelectorAll('#pubList .pub');
