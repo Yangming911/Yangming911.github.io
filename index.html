@@ -86,8 +86,9 @@
   /* ---------- sidebar portrait + news ---------- */
   .portrait{
     width:100%;
-    aspect-ratio:3/4;
+    aspect-ratio:4/5;
     object-fit:cover;
+    object-position:top;
     border-radius:12px;
     border:1px solid var(--accent-line);
     background:var(--accent-soft);
@@ -261,7 +262,7 @@
       column-gap:0;
     }
     .aside{max-width:440px;margin:0 auto 10px}
-    .portrait{object-position:center}
+    .portrait{max-height:420px}
     .body > section:first-child{margin-top:44px}
   }
   @media (max-width:680px){
